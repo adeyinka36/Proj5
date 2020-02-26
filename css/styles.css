@@ -210,7 +210,9 @@ header h1 {
     transition: .4s ease-out;
     outline: none;
   }
-  
+  #message{
+      display: none;
+  }
 
 /* ===================================== 
    Media Queries

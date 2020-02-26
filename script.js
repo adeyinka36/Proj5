@@ -1,6 +1,7 @@
 const searchContainer=document.getElementsByClassName("search-container")[0]
 const gallery=document.getElementById("gallery");
 const docBody=document.getElementById("docbody");
+let divList=[]
 
 function request(url){
     // create form
@@ -57,7 +58,18 @@ function request(url){
 
     //    modal
     employeeDiv.addEventListener("click",(e)=>{
-      const divList= document.getElementsByClassName("card")
+        const myDate= new Date(employee.dob.date)
+        const month=myDate.getMonth()+1
+        const day= myDate.getDate()
+        const year= myDate.getFullYear()
+        
+        const cards= document.getElementsByClassName("card")
+       for(i=0;i<cards.length;i++){
+           if(cards[i].style.display!=="none"){
+               divList.push(cards[i])
+           }
+       }
+      
       const currentIndex=Array.from(divList).indexOf(e.currentTarget)
       const modal=document.createElement("div")
       modal.className="modal-container"
@@ -72,7 +84,7 @@ function request(url){
            <hr>
            <p class="modal-text">${employee.cell}</p>
            <p class="modal-text">${employee.location.street.number} ${employee.location.street.name}, ${employee.location.city}, ${employee.location.postcode}</p>
-           <p class="modal-text">${employee.dob.date}</p>
+           <p class="modal-text">Birthday:${day}-${month}-${year}</p>
        </div>
        
        <div class="modal-btn-container">
@@ -91,22 +103,24 @@ function request(url){
      })
 
     modal.addEventListener("click",(e)=>{
-        if(e.target.innerText=="NEXT" && document.getElementsByClassName("card")[currentIndex+1]!=undefined){
+       
+        if(e.target.innerText=="NEXT" && divList[currentIndex+1]!=undefined){
             document.getElementsByClassName("modal-container")[0].remove()
-            document.getElementsByClassName("card")[currentIndex+1].click()
+            
+            divList[currentIndex+1].click()
 
         }
-        else if(e.target.innerText=="NEXT" && document.getElementsByClassName("card")[currentIndex+1]==undefined){
+        else if(e.target.innerText=="NEXT" && divList[currentIndex+1]==undefined){
             document.getElementsByClassName("modal-container")[0].remove()
-            document.getElementsByClassName("card")[0].click()
+            divList[0].click()
         }
-        else if(e.target.innerText=="PREV" && document.getElementsByClassName("card")[currentIndex-1]!=undefined){
+        else if(e.target.innerText=="PREV" && divList[currentIndex-1]!=undefined){
             document.getElementsByClassName("modal-container")[0].remove()
-            document.getElementsByClassName("card")[currentIndex-1].click()
+            divList[currentIndex-1].click()
         }
-        else if(e.target.innerText=="PREV" && document.getElementsByClassName("card")[currentIndex-1]==undefined){
+        else if(e.target.innerText=="PREV" && divList[currentIndex-1]==undefined){
             document.getElementsByClassName("modal-container")[0].remove()
-            document.getElementsByClassName("card")[document.getElementsByClassName("card").length-1].click()
+            divList[divList.length-1].click()
         }
         
     })
@@ -115,21 +129,30 @@ function request(url){
 })
 // add event listenere to search box that removes divs that dont meet the search cretria from the dom as keyup is initiated
 input1.addEventListener("keyup",()=>{
- const cards=document.getElementsByClassName("card")
+ divList=[]
+ let cards=document.getElementsByClassName("card")
+ for(i=0;i<cards.length;i++){
+    if(cards[i].style.display!=="none"){
+        divList.push(cards[i])
+    }
+}
+
  for(i=0;i<cards.length;i++){
      if(!cards[i].firstElementChild.firstElementChild.innerText.toLowerCase().includes(input1.value.toLowerCase())){
-         console.log(cards[i].firstElementChild.firstElementChild.innerText)
          cards[i].style.display="none"
      }
      else{
          cards[i].style.display="flex"
      }
  }
+
 })
-        
+
 
 
     }))
+
+    
     
 }
 
