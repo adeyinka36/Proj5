@@ -30,9 +30,6 @@ function request(url){
     .then(data=>data.json())
     // put each employee into gallery
     .then(data=>data.results.map(employee=>{
-        // make sure result meet criterian for exceeds
-
-
 
        const employeeDiv= document.createElement("div");
        employeeDiv.className="card"
@@ -86,7 +83,7 @@ function request(url){
 
    docBody.append(modal)
    
-   
+//    here i add the functionalities for the next and prev buttons
    const closeButton= document.getElementById("modal-close-btn")
      closeButton.addEventListener("click",(e)=>{
          
@@ -114,10 +111,9 @@ function request(url){
         
     })
 
-    // add event listenere to search box that removes divs that dont meet the search cretria from the dom as keyup is initiated
-
+    
 })
-
+// add event listenere to search box that removes divs that dont meet the search cretria from the dom as keyup is initiated
 input1.addEventListener("keyup",()=>{
  const cards=document.getElementsByClassName("card")
  for(i=0;i<cards.length;i++){
@@ -138,4 +134,4 @@ input1.addEventListener("keyup",()=>{
 }
 
 
-request("https://randomuser.me/api/?results=12")
+request("https://randomuser.me/api/?results=12&nat=us")
